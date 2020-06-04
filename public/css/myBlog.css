@@ -1,0 +1,24 @@
+a:hover{
+    /*color: no;*/
+    text-decoration: none;
+}
+.cycleBtn{
+    width: 5em;
+    height: 5em;
+    border-radius: 5em;
+}
+
+.author{
+    background-color: aquamarine;
+    color: white;
+    font-weight: bold;
+}
+
+.articleContent{
+    height: 35em;
+}
+
+.svgIcon{
+    width: 20px;
+    height: 20px;
+}

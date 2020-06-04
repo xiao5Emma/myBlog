@@ -8,19 +8,19 @@
     </div>
     <div class="row" style="margin-bottom: 20%">
         <div class="col-sm-12 font-weight-bold">文章分类</div>
-        @foreach ($articleTypes as $articleType)
-            <div class="col-sm-12 border-bottom">
-                {{$articleType}}
-            </div>
-        @endforeach
+{{--        @foreach ($articleTypes as $articleType)--}}
+{{--            <div class="col-sm-12 border-bottom">--}}
+{{--                {{$articleType}}--}}
+{{--            </div>--}}
+{{--        @endforeach--}}
     </div>
 
     <div class="row">
         <div class="col-sm-12 font-weight-bold">热门文章</div>
-        @foreach ($hotArticles as $hotArticle)
-            <div class="col-sm-12 border-bottom">
-                {{$hotArticle}}
-            </div>
-        @endforeach
+{{--        @foreach ($hotArticles as $hotArticle)--}}
+{{--            <div class="col-sm-12 border-bottom">--}}
+{{--                {{$hotArticle}}--}}
+{{--            </div>--}}
+{{--        @endforeach--}}
     </div>
 </div>

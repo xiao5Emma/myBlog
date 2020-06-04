@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
     <div class="row border" id="index_banner" style="height: 80%;position:relative;">
-        <img class="" src="{{URL::asset('/images/timg.jpg')}}" style="width:100%;height:100%;pointer-events: none;position:absolute;opacity: 0.65">
+{{--        <img class="" src="{{URL::asset('/images/timg.jpg')}}" style="width:100%;height:100%;pointer-events: none;position:absolute;opacity: 0.65">--}}
         <div class="col-sm-12 text-center bold" style="height: 10%;margin-top: 10%">
                 <h1>Xiao5`s Blog</h1>
         </div>

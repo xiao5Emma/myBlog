@@ -5,13 +5,15 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Application Name
-    |--------------------------------------------------------------------------
+    |------------------------------------Barryvdh\Debugbar\ServiceProvider--------------------------------------
     |
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
     |
     */
+
+    'log' => 'daily',
 
     'name' => env('APP_NAME', 'Laravel'),
 
@@ -67,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Shanghai',
 
     /*
     |--------------------------------------------------------------------------
@@ -81,7 +83,6 @@ return [
     */
 
     'locale' => 'en',
-
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -139,6 +140,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+//        Barryvdh\Debugbar\ServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -189,7 +191,7 @@ return [
     */
 
     'aliases' => [
-
+//        'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
