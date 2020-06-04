@@ -22,3 +22,15 @@ a:hover{
     width: 20px;
     height: 20px;
 }
+
+.foot_link{
+    color:#ccc;
+}
+
+.head_list_left{
+    border-left:1px solid #ccc ;
+}
+
+.head_list_right{
+    border-right:1px solid #ccc ;
+}

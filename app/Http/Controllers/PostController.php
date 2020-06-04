@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use PhpParser\Node\Expr\PostDec;
+use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\ArticleInfo;
 use App\ArticleType;
@@ -41,7 +42,6 @@ class PostController extends Controller
             ['watch' => 0, 'article_id' =>  $id  ]
         );
         return $id;
-//        return redirect("/posts/$id");
     }
 
     // 关于我
@@ -52,11 +52,9 @@ class PostController extends Controller
     // 文章列表
     public function articles(){
         $articles = Post::orderBy('created_at','desc')
-            ->join('article_infos', 'posts.article_type', '=', 'article_infos.article_id')
+            ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
-            ->get();
-//        dd( $articles );
-
+            ->Paginate(5);
         $articleTypes = [] ;
         $hotArticles = [] ;
 
@@ -66,8 +64,19 @@ class PostController extends Controller
     // 文章详情
     public function show(Post $post, ArticleInfo $m_articleInfo){
 
+        $m_articleInfo->where('article_id',$post->id)
+            ->increment('watch' ,1);
+
+
+        // 访客记录
+        $remote_ip = \request()->getClientIp();
+        $time = date('Y-m-d H:i:s',strtotime('now')) ;
+        $log = $remote_ip . "   "  . $time ;
+        Storage::disk('local')->append('visitors.log',    $log);
+
+
+        // 重定向到文章详情
         $articleInfo =  $m_articleInfo->select('watch')->where('article_id', '=', $post->id)->first();
-//        dd ($articleInfo );
         return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo]);
     }
 
@@ -91,9 +100,10 @@ class PostController extends Controller
     }
 
     // 删除文章
-    public function delete(){
-        dd(123);
-
+    public function delete($id ){
+        $post = new Post ;
+        $post->where('id' , '=' , $id)->delete();
+        return redirect('/posts/articles');
     }
 
     // 文章编辑提交

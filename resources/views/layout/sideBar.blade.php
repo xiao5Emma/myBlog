@@ -1,4 +1,4 @@
-<div class="col-sm-2 border" style=";background-color: white">
+<div class="col-sm-3 border" style=";background-color: white">
     <div class="row">
 
         <div class="input-group mb-3">
@@ -7,7 +7,7 @@
 
     </div>
     <div class="row" style="margin-bottom: 20%">
-        <div class="col-sm-12 font-weight-bold">文章分类</div>
+        <div class="col-sm-12 font-weight-bold border-bottom" style="padding-bottom: 1em;">文章分类</div>
 {{--        @foreach ($articleTypes as $articleType)--}}
 {{--            <div class="col-sm-12 border-bottom">--}}
 {{--                {{$articleType}}--}}
@@ -16,7 +16,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12 font-weight-bold">热门文章</div>
+        <div class="col-sm-12 font-weight-bold border-bottom border-top" style="padding-top: 1em ;padding-bottom: 1em ;">最多点击</div>
 {{--        @foreach ($hotArticles as $hotArticle)--}}
 {{--            <div class="col-sm-12 border-bottom">--}}
 {{--                {{$hotArticle}}--}}

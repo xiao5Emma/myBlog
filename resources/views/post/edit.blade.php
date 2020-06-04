@@ -44,10 +44,13 @@
 
             <div class="col-sm-1"></div>
         </div>
-
     </div>
-@endsection
 
-<script>
-    createEditor();
-</script>
+    <script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
+    <script src="{{asset('/js/wangEditor.min.js')}}" ></script>
+    <script src="{{asset('/js/myEditor.js')}}"></script>
+    <script>
+        initEditorData('{!! $post->content!!}')
+    </script>
+
+@endsection

@@ -28,7 +28,8 @@
                         </div>
                         <div class="wordsCount col-sm-2">
                             字数 :
-                            {{str_word_count($article->content)}}
+{{--                            {{str_word_count($article->content)}}--}}
+                            {{strlen($article->content)}}
                         </div>
                         <div class="watched col-sm-2">
                             观看次数 : {{$articleInfo->watch}}
@@ -36,7 +37,7 @@
                         <div class="created_at col-sm-3 " ></div>
                         <div class="created_at col-sm-3 " >
                             创建时间 :
-                            {{$articleInfo->created_at}}</div>
+                            {{$article->created_at}}</div>
 
                     </div>
                     <div class="row articleContent" >

@@ -38,18 +38,19 @@
 
 <script src="{{asset('/js/ajax.js')}}" ></script>
 
-
-<script src="{{asset('/js/wangEditor.min.js')}}"  async="async"></script>
+{{--<script src="{{asset('/js/wangEditor.min.js')}}"  ></script>--}}
+{{--<script src="{{asset('/js/myEditor.js')}}"></script>--}}
 <script src="{{asset('/js/myBlog.js')}}" ></script>
-<scrip src="{{asset('/js/myEditor.js')}}"></scrip>
 
 
 <script>
-
-
-
+    // createEditor();
+    // window.onload=function(){
+    //     createEditor();     // 初始化文本编辑器
+    // }
 
 </script>
+
 
 </body>
 </html>

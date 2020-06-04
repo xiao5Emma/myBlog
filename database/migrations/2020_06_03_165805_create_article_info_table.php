@@ -18,6 +18,7 @@ class CreateArticleInfoTable extends Migration
             $table->increments('id');
             $table->integer('article_id')->unique();
             $table->integer('watch')->default(0);
+            $table->integer('comment')->default(0);
         });
 
 

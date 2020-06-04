@@ -1,5 +1,6 @@
 
 
+log = console.log;
 
 function editArticle(obj){
     window.location.href = '/posts/'+$(obj).attr('id') +'/edit' ;
@@ -35,3 +36,25 @@ function store(){
         window.location.href="/posts/" + id;
     });
 }
+
+
+
+// 事件监听
+$('.head_list_left a,.head_list_right a').on('mouseover',function (e) {
+    ele = $(e.target).closest('div') ;
+    ele.css({
+        "background-color": "darkgray",
+    });
+    $(e.target).css({
+        "color": "white"
+    });
+}).on('mouseout',function (e) {
+    ele = $(e.target).closest('div') ;
+    ele.css({
+        "background-color": "unset",
+    });
+
+    $(e.target).css({
+        "color": "#495057"
+    });
+})
