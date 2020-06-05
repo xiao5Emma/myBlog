@@ -42,7 +42,6 @@
 {{--<script src="{{asset('/js/myEditor.js')}}"></script>--}}
 <script src="{{asset('/js/myBlog.js')}}" ></script>
 
-
 <script>
     // createEditor();
     // window.onload=function(){

@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 分享封面图
+Route::get('/posts/share', '\App\Http\Controllers\PostController@share');
+
 //  图片上传地址
 Route::post('/posts/image/upload', '\App\Http\Controllers\PostController@imagesUpload');
 Route::get('/posts/create', '\App\Http\Controllers\PostController@create');
@@ -41,4 +44,5 @@ Route::put('/posts/{post}/edit', '\App\Http\Controllers\PostController@update');
 // 删除文章
 Route::get('/posts/{post}/delete', '\App\Http\Controllers\PostController@delete');
 Route::get('/posts/tags/{articleId}', '\App\Http\Controllers\PostController@tags');
+
 

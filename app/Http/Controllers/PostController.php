@@ -82,7 +82,13 @@ class PostController extends Controller
 
     // 标签管理
     public function tags($articleTypeId, Post $post){
-        $articles = $post->where('article_type' , '=' ,$articleTypeId )->get();
+
+
+
+        $articles = $post->where('article_type' , '=' ,$articleTypeId )
+            ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
+            ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
+            ->Paginate(5);
         return view('post/tags',compact('articles'));
     }
 
@@ -111,6 +117,15 @@ class PostController extends Controller
         dd(\request()->all() );
     }
 
+    // 封面图展示
+    public function share(){
+//        $fullPath = base_path().DIRECTORY_SEPARATOR.'pic'.DIRECTORY_SEPARATOR.'demo.jpg';
+        return response()->streamDownload(function()  {
+            echo file_get_contents(   storage_path()."/images/timg.jpg" );
+        }, "aaaa.jpg" , ['content-type' => 'image/png']);
+
+
+    }
 
 
 }

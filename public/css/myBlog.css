@@ -26,6 +26,9 @@ a:hover{
 .foot_link{
     color:#ccc;
 }
+.content_height{
+    min-height: 42em;
+}
 
 .head_list_left{
     border-left:1px solid #ccc ;

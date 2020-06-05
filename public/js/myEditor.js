@@ -20,7 +20,9 @@ function createEditor(){
 }
 
 
-function initEditorData(html){
+function initEditorData(title,html){
+    $('.create_title').val(title);
     createEditor();
     editor.txt.html(html);
 }
+

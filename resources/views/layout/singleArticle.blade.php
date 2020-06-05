@@ -1,4 +1,3 @@
-
     @foreach ($articles as $article)
         <div class="row" style="background-color: white;margin: 10px 0px 10px 0px">
             <div class="col-sm-10 font-weight-bold border-bottom" style="cursor: pointer" onclick="window.location.href='/posts/{{$article->id}}'"><h1>
@@ -12,7 +11,7 @@
                 </a>
             </div>
             <div class="col-sm-1 border-bottom">
-                <a href="/posts/{{$article->id}}/delete" class="float-right" style="line-height: 2em;">
+                <a href="javascript:void(0);" onclick="deleteComfirm('{{$article->id}}')" class="float-right" style="line-height: 2em;">
                     <svg t="1591169329810" class="icon svgIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3645" width="200" height="200"><path d="M608 768c-17.696 0-32-14.304-32-32V384c0-17.696 14.304-32 32-32s32 14.304 32 32v352c0 17.696-14.304 32-32 32zM416 768c-17.696 0-32-14.304-32-32V384c0-17.696 14.304-32 32-32s32 14.304 32 32v352c0 17.696-14.304 32-32 32zM928 224H768v-64c0-52.928-42.72-96-95.264-96H352c-52.928 0-96 43.072-96 96v64H96c-17.696 0-32 14.304-32 32s14.304 32 32 32h832c17.696 0 32-14.304 32-32s-14.304-32-32-32z m-608-64c0-17.632 14.368-32 32-32h320.736C690.272 128 704 142.048 704 160v64H320v-64z" p-id="3646" fill="#bfbfbf"></path><path d="M736.128 960H288.064c-52.928 0-96-43.072-96-96V383.52c0-17.664 14.336-32 32-32s32 14.336 32 32V864c0 17.664 14.368 32 32 32h448.064c17.664 0 32-14.336 32-32V384.832c0-17.664 14.304-32 32-32s32 14.336 32 32V864c0 52.928-43.072 96-96 96z" p-id="3647" fill="#bfbfbf"></path></svg>
                 </a>
             </div>
@@ -46,3 +45,5 @@
             </div>
         </div>
     @endforeach
+    @include('layout.delete',['article'=>$article])
+
