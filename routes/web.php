@@ -17,6 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 用户登录
+Route::get('/posts/login', '\App\Http\Controllers\PostController@login');
+Route::post('/posts/login', '\App\Http\Controllers\UserController@loginCheck');
 // 分享封面图
 Route::get('/posts/share', '\App\Http\Controllers\PostController@share');
 

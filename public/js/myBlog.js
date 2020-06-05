@@ -23,6 +23,9 @@ function mobieLinkHide(){
 }
 
 
+
+
+
 function store(){
     var data = {
         "title": $('#create_title').val(),

@@ -12,9 +12,57 @@ use App\ArticleType;
 
 class PostController extends Controller
 {
+    // 获取系统运行时间
+    public function getRunTime(){
+        $time = \Config::get('blogInfo.createTime');
+        $start = strtotime($time) ;
+        $now = strtotime('now') ;
+        $runTime = $this->datediffage($start,$now) ;
+        return $runTime;
+    }
+
+
     //  博客首页
     public function index(){
-        return view('post/index');
+        $runTime = $this->getRunTime();
+        $runTime = json_decode(json_encode($runTime));
+        return view('post/index',compact('runTime'));
+    }
+
+    private function datediffage($unixTime_1, $unixTime_2) {
+        $timediff = abs($unixTime_2 - $unixTime_1);
+
+        //计算年
+        $divice = 31536000 ;
+        $years = (int) floor($timediff /  $divice);
+        $remain = $timediff %  $divice;
+
+        //计算月
+        $divice = 2592000 ;
+        $months =  (int) floor($remain / $divice);
+        $remain = $timediff %  $divice;
+
+        //计算日
+        $divice = 86400 ;
+        $days =  (int) floor($timediff / $divice);
+        $remain = $timediff % $divice;
+
+        //计算小时数
+        $divice = 3600 ;
+        $hours =  (int) floor($remain / $divice);
+        $remain = $timediff % $divice;
+
+        //计算分钟数
+        $divice = 60 ;
+        $remain = $remain % $divice;
+        $mins = (int) floor($remain / $divice);
+
+        //计算秒数
+        $divice = 60 ;
+        $secs = (int) $remain % $divice;
+        return [
+            'year' => $years,'month'=>$months,'day'=>$days,
+            'hour' => $hours, 'minute' => $mins, 'second' => $secs];
     }
 
     // 文章创建
@@ -74,17 +122,25 @@ class PostController extends Controller
         $log = $remote_ip . "   "  . $time ;
         Storage::disk('local')->append('visitors.log',    $log);
 
-
         // 重定向到文章详情
         $articleInfo =  $m_articleInfo->select('watch')->where('article_id', '=', $post->id)->first();
-        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo]);
+
+        // 登录判定
+        $logged = false;
+        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo,'logged'=>$logged ]);
     }
+
+    
+    // 用户登录
+    public function login(Post $post){
+        return view('post/login');
+    }
+
+
+
 
     // 标签管理
     public function tags($articleTypeId, Post $post){
-
-
-
         $articles = $post->where('article_type' , '=' ,$articleTypeId )
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')

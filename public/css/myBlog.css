@@ -37,3 +37,44 @@ a:hover{
 .head_list_right{
     border-right:1px solid #ccc ;
 }
+
+
+body{
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+}
+
+.techList_line {
+    width: 1px;
+    height: 16em;
+    background-color: #dededd;
+}
+
+/*.techList:after {*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+.techList li{
+    font-weight: 600;
+    font-size: 1.3em;
+    color: #80817f;
+    list-style: none;
+    margin-bottom: 2em;
+}
+
+.techListLi1{
+    text-align: right;
+}
+
+.techListLi2{
+    text-align: left;
+}
+
+.timeToolBox{
+    width: 2em;
+    /*height: 2em;*/
+    background-color: black;
+    color: white;
+    line-height: 2em;
+    border-radius: 20%;
+    font-weight: 200;
+}
