@@ -1,5 +1,6 @@
 // 富文本对象
 var editor = "";
+log =console.log ;
 function createEditor(){
         if(editor !== "")return editor;
         editor = new window.wangEditor( document.getElementById('editor') );
@@ -8,6 +9,11 @@ function createEditor(){
         editor.customConfig.uploadImgParams = {
             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
         }
+
+        // editor.customConfig.onchange = function (html) {
+        //     log (html);
+        //     $('.contentInput').val(html);
+        // }
         editor.create();
         return editor;
         // console.log(editor,callback , callback==="");

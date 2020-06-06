@@ -1,6 +1,7 @@
 
 
 log = console.log;
+var timeInterval = null ;
 
 function editArticle(obj){
     window.location.href = '/posts/'+$(obj).attr('id') +'/edit' ;
@@ -22,23 +23,19 @@ function mobieLinkHide(){
     $('#mobieQrcode').hide();
 }
 
-
-
-
-
-function store(){
-    var data = {
-        "title": $('#create_title').val(),
-        "content" : editor.txt.html()
-    }
-    
-    ajax('/posts', data ,function (res) {
-        var flag = res[0];
-        var id = res[1];
-        if(!flag){alert("提交失败 : " + msg);return;}
-        window.location.href="/posts/" + id;
+function printErrorMsg (msg) {
+    $(".print-error-msg").find("ul").html('');
+    $(".print-error-msg").css('display','block');
+    $.each( msg, function( key, value ) {
+        $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
     });
+
 }
+
+
+
+
+
 function deleteArticle(){
     var id = $('[name="deleteConfirm"]').attr('id') ;
     alert("http://xiao5.fun:8000/posts/" + id + '/delete')
@@ -139,4 +136,55 @@ $('.head_list_left a,.head_list_right a').on('mouseover',function (e) {
     $(e.target).css({
         "color": "#495057"
     });
+});
+
+//
+function printErrorMsg (msg) {
+    $(".print-error-msg").html('');
+    $(".print-error-msg").css('display','block');
+    $(".print-error-msg").css('display','block');
+    $.each( msg, function( key, value ) {
+        // $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+        $(".print-error-msg").append(value+'<br>');
+    });
+}
+// 提交文章
+function store() {
+    var title = $('.create_title').val();
+    var content = editor.txt.html();
+    var msg = articleObj.validate(title,content);
+    if(msg!==true){
+        printErrorMsg([msg]);
+        return;
+    }
+    articleObj.submit(title,content,function (res) {
+        var flag = res[0];
+        var id = res[1];
+        if(!flag) {
+            printErrorMsg(["通讯异常, 请重新提交"]);
+            return;
+        }
+
+
+        window.location.href="/posts/" + id;
+
+
+    });
+
+}
+
+// 页面加载完毕时调用
+$(function () {
+    //
+    var pageName = (/(?<=\/)[a-zA-Z]+$/i).exec(document.URL);
+    if(pageName!==null && pageName[0]==="posts")  timeIntervalObj.start();
+
+})
+
+$(".headBox a:not('.home,.phone') , .footBox a:not('.otherBlogs')").on('click',function (e) {
+    timeIntervalObj.stop();
+    var action = $(e.target).attr('action');
+    var link = "/posts/" + action ;
+    window.location.href = link;
+
 })

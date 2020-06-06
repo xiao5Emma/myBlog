@@ -1,3 +1,4 @@
+log = console.log;
 function ajax(url,p_data={},callback="",type="post",dataType ="json"){
     var data =  {_token: $('meta[name="_token"]').attr('content')} ;
     Object.assign(data, p_data);

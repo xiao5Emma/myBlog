@@ -40,6 +40,9 @@
 
 {{--<script src="{{asset('/js/wangEditor.min.js')}}"  ></script>--}}
 {{--<script src="{{asset('/js/myEditor.js')}}"></script>--}}
+
+<script src="{{asset('/js/timeInterval.js')}}" ></script>
+<script src="{{asset('/js/articleSubmit.js')}}" ></script>
 <script src="{{asset('/js/myBlog.js')}}" ></script>
 
 

@@ -2,7 +2,7 @@
 @extends('layout.main')
 @section('content')
 {{--    <style> div{border: 1px #ccc solid}</style>--}}
-    <div class="container-fluid">
+    <div class="container-fluid topPosition">
         <div class="row content_height" style="background-color: #f8f8f8;" >
 
                 <div class="col-sm-2">
@@ -22,20 +22,20 @@
                             作者 :
                             {{$article->user_id}}
                         </div>
-                        <div class="wordsCount col-sm-1 ">
+                        <div class="wordsCount col-sm-2 ">
                             字数 :
 {{--                            {{str_word_count($article->content)}}--}}
                             {{strlen($article->content)}}
                         </div>
-                        <div class="watched col-sm-1 ">
+                        <div class="watched col-sm-2 ">
                             观看 : {{$articleInfo->watch}}
                         </div>
-                        <div class="created_at col-sm-2 " >
+                        <div class="created_at col-sm-3 " >
                             {{$article->created_at}}
                         </div>
 
                         @if($logged)
-                        <div class="created_at col-sm-6 editGroup" >
+                        <div class="created_at col-sm-3 editGroup" >
                             <a  href="javascript:void(0);"  onclick="deleteComfirm('{{$article->id}}')" class="float-right" >
                                 <svg t="1591169329810" class="icon svgIcon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3645" width="200" height="200"><path d="M608 768c-17.696 0-32-14.304-32-32V384c0-17.696 14.304-32 32-32s32 14.304 32 32v352c0 17.696-14.304 32-32 32zM416 768c-17.696 0-32-14.304-32-32V384c0-17.696 14.304-32 32-32s32 14.304 32 32v352c0 17.696-14.304 32-32 32zM928 224H768v-64c0-52.928-42.72-96-95.264-96H352c-52.928 0-96 43.072-96 96v64H96c-17.696 0-32 14.304-32 32s14.304 32 32 32h832c17.696 0 32-14.304 32-32s-14.304-32-32-32z m-608-64c0-17.632 14.368-32 32-32h320.736C690.272 128 704 142.048 704 160v64H320v-64z" p-id="3646" fill="#bfbfbf"></path><path d="M736.128 960H288.064c-52.928 0-96-43.072-96-96V383.52c0-17.664 14.336-32 32-32s32 14.336 32 32V864c0 17.664 14.368 32 32 32h448.064c17.664 0 32-14.336 32-32V384.832c0-17.664 14.304-32 32-32s32 14.336 32 32V864c0 52.928-43.072 96-96 96z" p-id="3647" fill="#bfbfbf"></path></svg>
                             </a>

@@ -24,7 +24,7 @@ a:hover{
 }
 
 .foot_link{
-    color:#ccc;
+    color:#525251;
 }
 .content_height{
     min-height: 42em;
@@ -41,6 +41,7 @@ a:hover{
 
 body{
     font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+    background-color: #efefee;
 }
 
 .techList_line {
@@ -70,11 +71,73 @@ body{
 }
 
 .timeToolBox{
-    width: 2em;
-    /*height: 2em;*/
+    height: 70%;
+    width: 100%;
     background-color: black;
     color: white;
     line-height: 2em;
     border-radius: 20%;
     font-weight: 200;
 }
+
+.sideBarBox{
+    margin-bottom: 20%;padding-left: 2em;padding-right: 2em;
+}
+.sideBarTitle{
+    line-height: 4em;font-size: 1.125em;font-weight: 500;
+}
+
+.topPosition{
+    position:relative;top: 3em;
+}
+
+.aboutTitle{
+    border-left: .25rem solid #4ebbaa; padding-left: 1em;
+    margin-bottom: 1em;
+}
+
+.aboutContent{
+    margin-bottom: 2em;
+}
+.aboutMe p {
+    /*line-height: 1em;*/
+}
+
+.btnA{
+    border-color: #4ebbaa;
+    background-color: #4ebbaa73;
+}
+
+.btnA:hover{
+    border-color: #4ebbaa;
+    background-color: #4ebbaa;
+    animation: namemf 0.15s linear 2;
+
+}
+.btnB{
+    border-color: #6bc30d;
+    background-color: #6bc30d73;
+}
+.btnB:hover{
+    border-color: #6bc30d;
+    background-color: #6bc30d;
+    animation: namemf 0.15s linear 2;
+}
+
+@keyframes namemf{
+     0%{
+         transform:rotate(0deg) ;
+     }
+     25%{
+         transform: rotate(15deg);
+     }
+     50%{
+         transform: rotate(0deg);
+     }
+     75%{
+         transform: rotate(-15deg);
+     }
+     100%{
+         transform: rotate(0deg);
+     }
+ }

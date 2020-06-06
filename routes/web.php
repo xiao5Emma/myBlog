@@ -17,6 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// 调试接口
+Route::get('/posts/ts', '\App\Http\Controllers\PostController@test');
+Route::get('/posts/runTime', '\App\Http\Controllers\PostController@getRunTime');
+
+
+// 获取运行时间
+Route::post('/posts/runTime', '\App\Http\Controllers\PostController@getRunTime');
+
 // 用户登录
 Route::get('/posts/login', '\App\Http\Controllers\PostController@login');
 Route::post('/posts/login', '\App\Http\Controllers\UserController@loginCheck');

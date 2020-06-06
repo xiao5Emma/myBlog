@@ -12,13 +12,20 @@ use App\ArticleType;
 
 class PostController extends Controller
 {
+    // 文章返回限制字符数
+    private $limitText = 500 ;
+
+
     // 获取系统运行时间
     public function getRunTime(){
         $time = \Config::get('blogInfo.createTime');
         $start = strtotime($time) ;
-        $now = strtotime('now') ;
-        $runTime = $this->datediffage($start,$now) ;
+        $runTime = $this->datediffage($start) ;
         return $runTime;
+    }
+
+    public function test(){
+        dd($this->getRunTime());
     }
 
 
@@ -29,7 +36,8 @@ class PostController extends Controller
         return view('post/index',compact('runTime'));
     }
 
-    private function datediffage($unixTime_1, $unixTime_2) {
+    private function datediffage($unixTime_1) {
+        $unixTime_2 =  strtotime('now') ;
         $timediff = abs($unixTime_2 - $unixTime_1);
 
         //计算年
@@ -44,7 +52,7 @@ class PostController extends Controller
 
         //计算日
         $divice = 86400 ;
-        $days =  (int) floor($timediff / $divice);
+        $days =  (int) floor($remain / $divice);
         $remain = $timediff % $divice;
 
         //计算小时数
@@ -60,6 +68,16 @@ class PostController extends Controller
         //计算秒数
         $divice = 60 ;
         $secs = (int) $remain % $divice;
+
+
+        // 临时使用 , 需要调整
+        $months =  $months >12 ?  12 :  $months ;
+        $days =  $days >31 ?  31 :  $days ;
+        $hours =  $hours >24 ?  24 :  $days ;
+        $mins =  $mins >60 ?  60 :  $mins ;
+        $secs =  $secs >60 ?  60 :  $secs ;
+
+
         return [
             'year' => $years,'month'=>$months,'day'=>$days,
             'hour' => $hours, 'minute' => $mins, 'second' => $secs];
@@ -74,11 +92,20 @@ class PostController extends Controller
     // 文章保存
     public function store(Post $post,ArticleInfo $articleInfo,Request $request){
 
+
+
         // 验证
-        $this->validate(\request(),[
-            'title' => 'required|string|max:255|min:5',
-            'content'  => 'required|string|max:3000|min:5',
-        ]);
+//        $validatedData = $this->validate(\request(),[
+//            'title' => 'required|string|max:255|min:5',
+//            'content'  => 'required|string|max:255|min:5',
+//        ]);
+//        return $validatedData;
+
+        // 校验失败返回错误信息, 成功返回文章id
+//        if ($validatedData->fails()){
+//            return $validatedData;
+//        }
+
 
         $post->title = request('title');
         $post->content = request('content');
@@ -89,12 +116,30 @@ class PostController extends Controller
             ['article_id' =>  $id  ],
             ['watch' => 0, 'article_id' =>  $id  ]
         );
+
         return $id;
+//        return redirect("/posts/$id");
     }
 
     // 关于我
     public function about(){
         return view('post/aboutMe');
+    }
+
+    // $string内容过滤标签后截取前$num字符
+    private function HtmlToText($string,$num){
+        if($string){
+            //把一些预定义的 HTML 实体转换为字符
+            $html_string = htmlspecialchars_decode($string);
+            //将空格替换成空
+            $content = str_replace(" ", "", $html_string);
+            //函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
+            $contents = strip_tags($content);
+            //返回字符串中的前$num字符串长度的字符
+            return mb_strlen($contents,'utf-8') > $num ? mb_substr($contents, 0, $num, "utf-8").'....' : mb_substr($contents, 0, $num, "utf-8");
+        }else{
+            return $string;
+        }
     }
 
     // 文章列表
@@ -103,10 +148,20 @@ class PostController extends Controller
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
             ->Paginate(5);
+        $isEmpty = $articles->count()===0 ? 1 : 0 ;
+
+        if(!$isEmpty){
+            // 内容过滤标签后截取前500字符
+            foreach ($articles as $key => $article){
+                $content= $article['content'] ;
+                $articles[$key]['content'] = $this->HtmlToText($content,$this->limitText);
+            }
+        }
+
         $articleTypes = [] ;
         $hotArticles = [] ;
 
-        return view('post/articles',compact('articles','$articleTypes','$hotArticles'));
+        return view('post/articles',compact('articles','$articleTypes','$hotArticles','isEmpty'));
     }
 
     // 文章详情

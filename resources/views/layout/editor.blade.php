@@ -1,15 +1,15 @@
-<div class="container-fluid">
+<div class="container-fluid " style="position: relative;top:3em">
     <div class="row" style="height: 80%;background-color: #f8f8f8;" >
         <div class="col-sm-12" >
             <div class="container" >
-                <div action="/posts" class="row content_height" method="post">
+                <div class="row content_height" >
+                    @csrf
                     <div class="col-sm-12" style="padding: 0">
                         <div class="input-group mb-3" style="margin: 8px 0 8px 0;margin-bottom: 8px!important;">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3">标题 :</span>
                             </div>
-                            {{csrf_field()}}
-                            <input type="text" class="form-control create_title"  autocomplete="off" placeholder="请输入文章标题" id="basic-url" aria-describedby="basic-addon3">
+                            <input type="text" value="1" name="title" class="form-control create_title"  autocomplete="off" placeholder="请输入文章标题" id="basic-url" aria-describedby="basic-addon3">
                         </div>
                     </div>
 
@@ -17,8 +17,11 @@
                     </div>
                     @include('layout.error')
 
+                    <div class="alert alert-danger print-error-msg" style="display:none">
+                    </div>
+
                     <div class="col-sm-12" style="padding: 0;background-color: white;" >
-                        <button  class="btn btn-primary" onclick="store()"> 提交</button>
+                        <button class="btn btn-primary" onclick="store()"> 提交</button>
                     </div>
                 </div>
             </div>
