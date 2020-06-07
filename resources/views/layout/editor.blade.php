@@ -17,8 +17,7 @@
                     </div>
                     @include('layout.error')
 
-                    <div class="alert alert-danger print-error-msg" style="display:none">
-                    </div>
+
 
                     <div class="col-sm-12" style="padding: 0;background-color: white;" >
                         <button class="btn btn-primary" onclick="store()"> 提交</button>

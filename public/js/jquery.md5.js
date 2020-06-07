@@ -31,6 +31,7 @@
 */
 
 (function($){
+    alert(123)
 var rotateLeft = function(lValue, iShiftBits) {
 return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
 }

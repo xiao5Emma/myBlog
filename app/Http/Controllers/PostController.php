@@ -91,17 +91,14 @@ class PostController extends Controller
 
     // 文章保存
     public function store(Post $post,ArticleInfo $articleInfo,Request $request){
-
-
-
         // 验证
 //        $validatedData = $this->validate(\request(),[
-//            'title' => 'required|string|max:255|min:5',
-//            'content'  => 'required|string|max:255|min:5',
+//            'title' => 'required|string|max:255|min:1',
+//            'content'  => 'required|string|max:255|min:1',
 //        ]);
 //        return $validatedData;
 
-        // 校验失败返回错误信息, 成功返回文章id
+//         校验失败返回错误信息, 成功返回文章id
 //        if ($validatedData->fails()){
 //            return $validatedData;
 //        }
@@ -187,7 +184,8 @@ class PostController extends Controller
 
     
     // 用户登录
-    public function login(Post $post){
+    public function login(Post $post,\Request $request){
+
         return view('post/login');
     }
 
@@ -217,10 +215,12 @@ class PostController extends Controller
     }
 
     // 删除文章
-    public function delete($id ){
+    public function delete( ){
+        $id = \request('id');
         $post = new Post ;
         $post->where('id' , '=' , $id)->delete();
-        return redirect('/posts/articles');
+        return true;
+//        return redirect('/posts/articles');
     }
 
     // 文章编辑提交

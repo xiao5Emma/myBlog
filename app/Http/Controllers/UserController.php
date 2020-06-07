@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\User;
 
@@ -11,24 +12,26 @@ class UserController extends Controller
 {
     // 登录验证
     public function loginCheck(User $m_user ,Request $request){
-
-        $this->validate(\request(),[
-            'userID' => 'required|string|max:15|min:1',
-            'password'  => 'required|string|max:30|min:3',
+        $validator = Validator::make($request->all(), [
+            'userID' => 'required|string|max:15|min:3',
+            'password'  => 'required',
         ]);
 
-        $userID  = (int)request('userID') ;
-        $password  = request('password') ;
+        if ($validator->fails()) {
+            return json_encode($validator->getMessageBag()->toArray());
+        }
 
-        $result = $m_user->where([
-            [ 'id', '=' , $userID ],
-            [ 'password', '=' , $password ]
+
+        $uid = $request->userID ;
+        $password = $request->password ;
+        $validate = $m_user->where([
+            ['id','=',$uid],
+            ['password','=',$password],
         ])->exists();
-        dd($result);
+//        if($validate) ; // 会话开启
 
-        if($result) $m_user->logged = $result ;
-        return $result;
-
-//        return redirect('/posts');
+        return json_encode([
+            'validate' => $validate
+        ]);
     }
 }

@@ -36,13 +36,9 @@ function printErrorMsg (msg) {
 
 
 
-function deleteArticle(){
-    var id = $('[name="deleteConfirm"]').attr('id') ;
-    alert("http://xiao5.fun:8000/posts/" + id + '/delete')
-    window.location.href = "http://xiao5.fun:8000/posts/" + id + '/delete';
-}
 
 
+// 删除确认
 function deleteComfirm(id){
     $('#deleteComfirm').modal();
     $('[name="deleteConfirm"]').attr('id',id) ;
@@ -144,7 +140,6 @@ function printErrorMsg (msg) {
     $(".print-error-msg").css('display','block');
     $(".print-error-msg").css('display','block');
     $.each( msg, function( key, value ) {
-        // $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
         $(".print-error-msg").append(value+'<br>');
     });
 }
@@ -164,11 +159,7 @@ function store() {
             printErrorMsg(["通讯异常, 请重新提交"]);
             return;
         }
-
-
-        window.location.href="/posts/" + id;
-
-
+        window.location.href="/posts/articles" ;
     });
 
 }
@@ -180,6 +171,7 @@ $(function () {
     if(pageName!==null && pageName[0]==="posts")  timeIntervalObj.start();
 
 })
+
 
 $(".headBox a:not('.home,.phone') , .footBox a:not('.otherBlogs')").on('click',function (e) {
     timeIntervalObj.stop();
