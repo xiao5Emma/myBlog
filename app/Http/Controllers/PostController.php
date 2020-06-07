@@ -202,8 +202,9 @@ class PostController extends Controller
     }
 
     // 图片上传
-    public function imagesUpload(){
-        return view('post/create');
+    public function imagesUpload(Request $request){
+        $path  = $request->file('wangEditorImgage')->storePublicly(md5(time()));
+        return json_encode(['url'=>asset('storage/'. $path )]);
     }
 
 

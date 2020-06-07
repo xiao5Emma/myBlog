@@ -1,12 +1,12 @@
 {{--文章详情--}}
-@extends('layout.main')
+@extends('layout.editorMain')
 @section('content')
     <div class="container-fluid topPosition">
-        <div class="row content_height" style="background-color: #f8f8f8;" >
+        <div class="row " style="min-height:44em;background-color: #f8f8f8;overflow-y: scroll" >
 
                 <div class="col-sm-2">
-                    <div class="row" style="position:fixed;top:13em;left: 11em;" ><button onclick="like()" class="btn btn-primary cycleBtn">like</button></div>
-                    <div class="row" style="position:fixed;top:19em;left: 11em;"><button onclick="share({{$article->id}})" class="btn btn-success cycleBtn">share</button></div>
+                    <div class="row" style="position:fixed;top:13em;left: 11em;" ><button onclick="like()" class="btnA btn btn-xs btn-primary cycleBtn">like</button></div>
+                    <div class="row" style="position:fixed;top:19em;left: 11em;"><button onclick="share({{$article->id}})" class="btnB btn btn-xs btn-success cycleBtn">share</button></div>
                 </div>
 
                 <div class="col-sm-8" style="background-color: white;">
@@ -57,7 +57,6 @@
     </div>
 
 @include('layout.delete',['id'=>$article->id])
-
 
 
 {{--微信接口--}}
