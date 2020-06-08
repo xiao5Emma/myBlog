@@ -1,0 +1,39 @@
+
+
+.polygonBg {
+    animation:slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg, #6c3 50%, #09f 50%);
+    opacity:.5;
+    bottom:0;
+    left:-50%;
+    position:absolute;
+    right:-50%;
+    z-index:-1;
+    height: 100%;
+}
+
+.polygonBg2 {
+    animation-direction:alternate-reverse;
+    animation-duration:4s;
+}
+
+.polygonBg3 {
+    animation-duration:5s;
+}
+
+.polygonContent {
+    transform:translate(-50%, -50%);
+}
+
+/*.polygonContent h1, .polygonContent h3 {*/
+/*    font-family:monospace;*/
+/*}*/
+
+@keyframes slide {
+    0% {
+        transform:translateX(-25%);
+    }
+    100% {
+        transform:translateX(25%);
+    }
+}

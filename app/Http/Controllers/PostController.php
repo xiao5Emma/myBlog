@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\Storage;
 use App\Post;
 use App\ArticleInfo;
 use App\ArticleType;
+use Auth;
+use App\Http\Controllers\LoginController as Login;
+
 
 class PostController extends Controller
 {
     // 文章返回限制字符数
     private $limitText = 500 ;
+    private $igonoreIpList = ['119.28.203.193'];
+
 
 
     // 获取系统运行时间
@@ -24,16 +29,26 @@ class PostController extends Controller
         return $runTime;
     }
 
-    public function test(){
-        dd($this->getRunTime());
+    public function test(Request $request){
+        dd($request->session()->all());
     }
 
+    // 注销登录
+    public function loginOut(Login $login, Request $request){
+        $login->clearAll($request);
+        return redirect('/posts');
+    }
 
     //  博客首页
-    public function index(){
+    public function index(Request $request, Login $login){
         $runTime = $this->getRunTime();
         $runTime = json_decode(json_encode($runTime));
-        return view('post/index',compact('runTime'));
+        $isLoggin = $login->isLoggin($request);
+
+        $personalInfo1 = \Config::get('blogInfo.personalInfo1');
+        $personalInfo2 = \Config::get('blogInfo.personalInfo2');
+
+        return view('post/index',compact('runTime','$isLoggin','personalInfo1','personalInfo2'));
     }
 
     private function datediffage($unixTime_1) {
@@ -83,10 +98,16 @@ class PostController extends Controller
             'hour' => $hours, 'minute' => $mins, 'second' => $secs];
     }
 
+
+
     // 文章创建
-    public function create(){
-//        登录校验
-        return view('post/create');
+    public function create(Request $request,Login $login){
+        $isLoggin = $login->isLoggin($request);
+        if( $isLoggin ){
+            return view('post/create');
+        }else{
+            return view('post/login');
+        }
     }
 
     // 文章保存
@@ -120,7 +141,9 @@ class PostController extends Controller
 
     // 关于我
     public function about(){
-        return view('post/aboutMe');
+        $personalInfo1 = \Config::get('blogInfo.personalInfo1');
+        $personalInfo2 = \Config::get('blogInfo.personalInfo2');
+        return view('post/aboutMe',compact('personalInfo1','personalInfo2'));
     }
 
     // $string内容过滤标签后截取前$num字符
@@ -141,6 +164,9 @@ class PostController extends Controller
 
     // 文章列表
     public function articles(){
+        // 访客记录
+        $this->getIpLog();
+
         $articles = Post::orderBy('created_at','desc')
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
@@ -161,34 +187,50 @@ class PostController extends Controller
         return view('post/articles',compact('articles','$articleTypes','$hotArticles','isEmpty'));
     }
 
-    // 文章详情
-    public function show(Post $post, ArticleInfo $m_articleInfo){
-
-        $m_articleInfo->where('article_id',$post->id)
-            ->increment('watch' ,1);
-
-
-        // 访客记录
+    // 访客ip写入
+    private function getIpLog(){
         $remote_ip = \request()->getClientIp();
+        if(in_array($remote_ip, $this->igonoreIpList))return;
+
         $time = date('Y-m-d H:i:s',strtotime('now')) ;
         $log = $remote_ip . "   "  . $time ;
-        Storage::disk('local')->append('visitors.log',    $log);
+        Storage::disk('local')->append('logs/visitors.log',    $log);
+    }
+
+    // 文章观看人数加一
+    public function watchIncrement($id,$remote_ip,$m_articleInfo){
+        if(!in_array($remote_ip, $this->igonoreIpList)){
+            $m_articleInfo->where('article_id',$id)
+                ->increment('watch' ,1);
+        }
+    }
+
+    // 文章详情
+    public function show(Post $post, ArticleInfo $m_articleInfo,Request $request,Login $login){
+        // 观看人数+1
+        $remote_ip = \request()->getClientIp();
+        $id = $post->id;
+        $this->watchIncrement($id,$remote_ip,$m_articleInfo);
 
         // 重定向到文章详情
         $articleInfo =  $m_articleInfo->select('watch')->where('article_id', '=', $post->id)->first();
 
         // 登录判定
-        $logged = false;
-        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo,'logged'=>$logged ]);
+        $isLoggin = $login->isLoggin($request);
+        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo,'logged'=>$isLoggin ]);
     }
 
     
     // 用户登录
-    public function login(Post $post,\Request $request){
-
+    public function login(Post $post,Request $request){
         return view('post/login');
     }
 
+
+    public function logOut(Post $post,Request $request,Login $login){
+        $login->logOut($request);
+        return view('post/');
+    }
 
 
 
@@ -219,9 +261,11 @@ class PostController extends Controller
     public function delete( ){
         $id = \request('id');
         $post = new Post ;
+        $articleInfo = new ArticleInfo() ;
         $post->where('id' , '=' , $id)->delete();
+        $articleInfo->where('article_id' , '=' , $id)->delete();
+
         return true;
-//        return redirect('/posts/articles');
     }
 
     // 文章编辑提交

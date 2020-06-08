@@ -1,12 +1,11 @@
 @if(!$isEmpty)
     @foreach ($articles as $article)
-        <div class="row" style="background-color: white;margin: 10px 0px 10px 0px">
-            <div class="col-sm-12 font-weight-bold border-bottom" style="cursor: pointer" onclick="window.location.href='/posts/{{$article->id}}'">
+        <div class="row" style="background-color: white;margin: 10px 0px 10px 0px"  onclick="window.location.href='/posts/{{$article->id}}'">
+            <div class="col-sm-12 font-weight-bold border-bottom" style="cursor: pointer">
                 <div style="line-height: 1em;font-size: 1em;margin: 1em auto">
                     {{ $article->title  }}
                 </div>
             </div>
-
 
             <div class="col-sm-12 showArticleContent">
                 {!! $article->content !!}

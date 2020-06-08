@@ -45,9 +45,9 @@ body{
 }
 
 .techList_line {
-    width: 1px;
+    /*width: 1px;*/
     height: 16em;
-    background-color: #dededd;
+    /*background-color: #dededd;*/
 }
 
 /*.techList:after {*/
@@ -105,39 +105,42 @@ body{
 
 .btnA{
     border-color: #4ebbaa;
-    background-color: #4ebbaa73;
+    background-color: #00947d;
 }
 
 .btnA:hover{
-    border-color: #4ebbaa;
-    background-color: #4ebbaa;
+    border-color: white;
+    background-color: #00947d;
     animation: namemf 0.15s linear 2;
 
 }
 .btnB{
     border-color: #6bc30d;
-    background-color: #6bc30d73;
+    background-color: #6bc30d;
 }
 .btnB:hover{
-    border-color: #6bc30d;
+    border-color: white;
     background-color: #6bc30d;
     animation: namemf 0.15s linear 2;
 }
 
+
+
+
 @keyframes namemf{
-     0%{
-         transform:rotate(0deg) ;
-     }
-     25%{
-         transform: rotate(15deg);
-     }
-     50%{
-         transform: rotate(0deg);
-     }
-     75%{
-         transform: rotate(-15deg);
-     }
-     100%{
-         transform: rotate(0deg);
-     }
- }
+    0%{
+        transform:rotate(0deg) ;
+    }
+    25%{
+        transform: rotate(15deg);
+    }
+    50%{
+        transform: rotate(0deg);
+    }
+    75%{
+        transform: rotate(-15deg);
+    }
+    100%{
+        transform: rotate(0deg);
+    }
+}
