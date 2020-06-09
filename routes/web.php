@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 // 调试接口
-Route::get('/posts/ts', '\App\Http\Controllers\PostController@test');
+//Route::get('/posts/ts', '\App\Http\Controllers\PostController@test');
 Route::get('/posts/runTime', '\App\Http\Controllers\PostController@getRunTime');
+Route::get('/posts/logs', '\App\Http\Controllers\LogController@showLogs');
 
 
 // 获取运行时间
@@ -39,13 +40,19 @@ Route::get('/posts/create', '\App\Http\Controllers\PostController@create');
 // 文章列表页
 Route::post('/posts', '\App\Http\Controllers\PostController@store');    # 提交文章 insert
 
+// 文章检索
+Route::post('/posts/searchArticle', '\App\Http\Controllers\PostController@searchArticle');
 
 
+// 主页
 Route::get('/posts', '\App\Http\Controllers\PostController@index');
 Route::get('/posts/articles', '\App\Http\Controllers\PostController@articles');
 // 文章详情页
 Route::get('/posts/about', '\App\Http\Controllers\PostController@about');
 Route::get('/posts/{post}', '\App\Http\Controllers\PostController@show');
+
+// 根据id请求文章内容
+Route::post('/posts/getArticleContent', '\App\Http\Controllers\PostController@getArticleContent');
 
 
 

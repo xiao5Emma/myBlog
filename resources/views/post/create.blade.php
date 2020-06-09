@@ -2,7 +2,7 @@
 @extends('layout.main')
 @section('content')
 
-    @include('layout.editor')
+ @include('layout.editor')
    
     <script>
         createEditor();

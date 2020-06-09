@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use PhpParser\Node\Expr\PostDec;
@@ -17,7 +18,7 @@ class PostController extends Controller
 {
     // 文章返回限制字符数
     private $limitText = 500 ;
-    private $igonoreIpList = ['119.28.203.193'];
+    private $igonoreIpList = ['119.28.203.193','113.65.33.17'];
 
 
 
@@ -125,18 +126,32 @@ class PostController extends Controller
 //        }
 
 
-        $post->title = request('title');
-        $post->content = request('content');
-        $post->save();
-        $id = $post->id;
+
+        $aid = request('id');
+        $title = request('title') ;
+        $content = request('content') ;
+        if(  $aid  ===""||  $aid  ===null ) {
+            $post->title = $title;
+            $post->content = $content;
+            $post->save();
+            $id = $post->id;
+
+
+        }else{
+            $post->where('id', $aid)
+                ->update([
+                    'title' => $title,
+                    'content' => $content]);
+            $id = $aid ;
+        }
+
 
         $articleInfo::firstOrCreate(
-            ['article_id' =>  $id  ],
+            ['article_id' =>  $id ],
             ['watch' => 0, 'article_id' =>  $id  ]
         );
 
         return $id;
-//        return redirect("/posts/$id");
     }
 
     // 关于我
@@ -166,14 +181,13 @@ class PostController extends Controller
     public function articles(){
         // 访客记录
         $this->getIpLog();
-
         $articles = Post::orderBy('created_at','desc')
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
-            ->Paginate(5);
-        $isEmpty = $articles->count()===0 ? 1 : 0 ;
+            ->Paginate(15);
+        $count = $articles->total();
 
-        if(!$isEmpty){
+        if($count>0){
             // 内容过滤标签后截取前500字符
             foreach ($articles as $key => $article){
                 $content= $article['content'] ;
@@ -184,7 +198,7 @@ class PostController extends Controller
         $articleTypes = [] ;
         $hotArticles = [] ;
 
-        return view('post/articles',compact('articles','$articleTypes','$hotArticles','isEmpty'));
+        return view('post/articles',compact('articles','$articleTypes','$hotArticles','count'));
     }
 
     // 访客ip写入
@@ -205,19 +219,48 @@ class PostController extends Controller
         }
     }
 
+    // 检索文章
+    public function searchArticle(Post $post){
+        $wordStr = \request('word');
+        $wordStr = preg_replace('/\s+/',' ',$wordStr) ;
+        if($wordStr==="")return json_encode("");
+        $wordsArray  = explode(' ',$wordStr );
+        $whereRaw = "";
+        foreach($wordsArray as $key =>  $word){
+            if($key !== (count($wordsArray)-1) ){
+                $whereRaw .= "`title` like '%$word%' or `content` like '%$word%' or " ;
+            }else{
+                $whereRaw .= "`title` like '%$word%' or `content` like '%$word%' " ;
+            }
+        }
+
+        $result =  $post->select('id','title','content')->whereRaw($whereRaw)->get();
+        foreach ($result as $key => $value){
+            $content = $this->HtmlToText($value->content, 8 ) ;
+            $result[$key]->content =$content;
+        }
+        return json_encode($result);
+    }
+
+
     // 文章详情
-    public function show(Post $post, ArticleInfo $m_articleInfo,Request $request,Login $login){
+    public function show(Post $post,User $user, ArticleInfo $m_articleInfo,Request $request,Login $login){
         // 观看人数+1
         $remote_ip = \request()->getClientIp();
         $id = $post->id;
         $this->watchIncrement($id,$remote_ip,$m_articleInfo);
 
         // 重定向到文章详情
-        $articleInfo =  $m_articleInfo->select('watch')->where('article_id', '=', $post->id)->first();
+        $articleInfo =  $m_articleInfo->select('watch')
+                                      ->where('article_id', '=', $post->id)
+                                       ->first();
+        // 此处需要优化sql
+        $userName = $user->select('name')->join('posts', 'posts.user_id', '=', 'users.id')->get();
+        $userName = $userName[0]->name ;
 
         // 登录判定
         $isLoggin = $login->isLoggin($request);
-        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo,'logged'=>$isLoggin ]);
+        return view('post/show', ['article'=>$post,'articleInfo'=>$articleInfo,'logged'=>$isLoggin ,'name'=>$userName]);
     }
 
     
@@ -240,7 +283,8 @@ class PostController extends Controller
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
             ->Paginate(5);
-        return view('post/tags',compact('articles'));
+        $isEmpty = $articles->total();
+        return view('post/tags',compact('articles','isEmpty'));
     }
 
     // 图片上传
@@ -250,11 +294,18 @@ class PostController extends Controller
     }
 
 
-    // 文章编辑
+    // 文章编辑 , 重定向页面
     public function edit($id){
-        $o_post = new Post;
-        $post = $o_post->where('id','=',$id)->first();
-        return view('post/edit',compact('id','post'));
+        return view('post/edit',compact('id'));
+    }
+
+    // 加载文章标题, 文章内容
+    public function getArticleContent(){
+        $id = \request('id');
+        $post = new Post;
+        $result = $post->select('title','content', 'user_id','article_type')
+            ->where('id','=',$id)->first();
+        return json_encode($result );
     }
 
     // 删除文章
@@ -264,7 +315,6 @@ class PostController extends Controller
         $articleInfo = new ArticleInfo() ;
         $post->where('id' , '=' , $id)->delete();
         $articleInfo->where('article_id' , '=' , $id)->delete();
-
         return true;
     }
 

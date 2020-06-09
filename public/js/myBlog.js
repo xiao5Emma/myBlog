@@ -34,7 +34,9 @@ function printErrorMsg (msg) {
 
 
 
-
+function redirectArticle(id) {
+    window.location.href='/posts/' + id ;
+}
 
 
 
@@ -114,7 +116,57 @@ function share(id){
 
 
 
+function initArticleContent(id){
+    window.onload=function(){
+        getArticleContent(id).then((res)=>{
+            if(!res[0])return;
+            var data = res[1];
+            var html  = data['content'] ;
+
+            html = markdownToHtml(html);
+            $('.articleContent p').html(html);
+        })
+    }
+}
+
+
+
+
 // 事件监听
+$('.searchArticle').on('keypress',function (e) {
+    if(e.charCode===13){
+        ajax('/posts/searchArticle',{  "word":$('.searchArticle').val() },function (res) {
+            if(!res[0])return ;
+            var data = res[1];
+            var parentDom = $('.searchArticleShow') ;
+            parentDom.find('div').remove();
+            log(data);
+            if(data===""){
+                var itemDom = $('.searchArticleShowItem').clone();
+                itemDom.html("未检索到相关内容") ;
+                itemDom.css('display', 'block') ;
+                parentDom.append(itemDom);
+                return ;
+            }
+            var  modelDom = $('.searchArticleShowItem') ;
+            // 格式    # asdasd > asdasda
+            data.map((v,k)=>{
+                var id = v["id"] ;
+                var str = "<i style='color: red'># </i><i style='font-weight: 600!important;'>" + v['title']+ "</i> > "+v['content'] ;
+                // 创建元素
+                var itemDom = modelDom.clone();
+                itemDom.html(str) ;
+                itemDom.attr('id', id) ;
+                itemDom.css('display', 'block') ;
+                parentDom.append(itemDom);
+            });
+            parentDom.find('div').on('click',function (e) {
+                var id = $(e.target).attr('id');
+                window.location.href = "/posts/"+ $.trim(id);
+            });
+        },'post','json',1);
+    }
+})
 $('.head_list_left a,.head_list_right a').on('mouseover',function (e) {
     ele = $(e.target).closest('div') ;
     ele.css({
@@ -144,7 +196,7 @@ function printErrorMsg (msg) {
     });
 }
 // 提交文章
-function store() {
+function store(id="") {
     var title = $('.create_title').val();
     var content = editor.txt.html();
     var msg = articleObj.validate(title,content);
@@ -152,7 +204,7 @@ function store() {
         printErrorMsg([msg]);
         return;
     }
-    articleObj.submit(title,content,function (res) {
+    articleObj.submit(id,title,content,function (res) {
         var flag = res[0];
         var id = res[1];
         if(!flag) {
@@ -166,17 +218,16 @@ function store() {
 
 // 页面加载完毕时调用
 $(function () {
-    //
     var pageName = (/(?<=\/)[a-zA-Z]+$/i).exec(document.URL);
     if(pageName!==null && pageName[0]==="posts")  timeIntervalObj.start();
 
+
+    $(".headBox a:not('.home,.phone') , .footBox a:not('.otherBlogs')").on('click',function (e) {
+        timeIntervalObj.stop();
+        var action = $(e.target).attr('action');
+        var link = "/posts/" + action ;
+        window.location.href = link;
+    })
 })
 
 
-$(".headBox a:not('.home,.phone') , .footBox a:not('.otherBlogs')").on('click',function (e) {
-    timeIntervalObj.stop();
-    var action = $(e.target).attr('action');
-    var link = "/posts/" + action ;
-    window.location.href = link;
-
-})

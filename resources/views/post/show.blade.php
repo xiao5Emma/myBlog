@@ -19,7 +19,7 @@
                     <div class="row border-bottom" name="info" style=" padding: 0.5em;">
                         <div class="author col-sm-2 ">
                             作者 :
-                            {{$article->user_id}}
+                            {{$name}}
                         </div>
                         <div class="wordsCount col-sm-2 ">
                             字数 :
@@ -45,12 +45,14 @@
 {{--                        @endif--}}
 
                     </div>
-                    <div class="row articleContent" style="    padding: 1em;">
-                            <p>{!! $article->content !!}</p>
+                    <div class="row articleContent" style="      overflow-x: scroll;  padding: 1em;">
+                            <p>
+{{--                                {!! $article->content !!}--}}
+                            </p>
                     </div>
                 </div>
 
-                {{--                @include('layout.singleArticleEdit')--}}
+
 
 
         </div>
@@ -61,7 +63,9 @@
 
 {{--微信接口--}}
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
+    <script>
+        initArticleContent({{$article->id}});
+    </script>
 @endsection
 
 

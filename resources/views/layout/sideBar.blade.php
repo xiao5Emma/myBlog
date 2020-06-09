@@ -1,11 +1,18 @@
 <div class="col-sm-3" style="padding-right: 3em;margin-top: 10px">
-    <div style="background-color: white;min-height: 36em" class="row">
+    <div style="background-color: white;" class="row">
         <div class="col-sm-12" style="padding: 1em;">
-            <div class="input-group">
-                <input id="search" type="text" class="form-control border" placeholder="检索文章" aria-label="Username" aria-describedby="basic-addon1">
+            <div class="input-group" style="margin-bottom: 1em;">
+                <input type="text" class="form-control border searchArticle" placeholder="检索: 回车检索文章" aria-label="Username" aria-describedby="basic-addon1">
             </div>
+{{--            搜索文件结果框--}}
+            <div class="row searchArticleShow" style="max-height:15em;overflow-y: scroll; "></div>
         </div>
-        <div class="col-sm-12 sideBarBox " style="    margin-top: 1em;">
+
+
+        @include('layout.searchArticleShowItem')
+
+
+        <div class="col-sm-12 sideBarBox " >
             <div class="row border-bottom border-top sideBarTitle">
                 文章分类
             </div>

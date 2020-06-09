@@ -14,7 +14,7 @@ function validateArticle(title,content) {
     if( title.length<1 )return "标题不得少于1个字"
     if( title.length>255 )return "标题不得超过255个字"
     if( content.length<1 )return "内容不得少于1个字"
-    if( content.length>3000 )return "内容不得超过3000个字"
+    if( content.length>30000 )return "内容不得超过30000个字"
     return true;
 }
 
@@ -29,11 +29,13 @@ function deleteArticle(){
 }
 
 
-function submitArticle(title,content,callback="") {
+function submitArticle(id,title,content,callback="") {
     var data = {
+        "id" : id ,
         "title": title,
         "content" : content
     }
+   
     ajax('/posts', data ,function (res) {
         if(callback!=="")callback(res);
         console.log(res)

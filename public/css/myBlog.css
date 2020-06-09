@@ -7,9 +7,11 @@ a:hover{
     height: 5em;
     border-radius: 5em;
 }
-
+.pointer{
+    cursor: pointer
+}
 .author{
-    background-color: aquamarine;
+    background-color: #5a5a5a;
     color: white;
     font-weight: bold;
 }
@@ -38,7 +40,12 @@ a:hover{
     border-right:1px solid #ccc ;
 }
 
-
+.articleContent pre ,#editor pre{
+    padding: 2em;
+    width: 100%;
+    background-color: #ccc;
+    color: black;
+}
 body{
     font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
     background-color: #efefee;
@@ -143,4 +150,20 @@ body{
     100%{
         transform: rotate(0deg);
     }
+}
+
+.gray{
+    background-color: #636b6f;
+    color: white;
+}
+
+.red{
+    background-color: red;
+    color: white;
+}
+
+.searchArticleShowItem{
+    background-color: #e4e4e4;
+    border-bottom: 1px solid white!important;
+    /*color: black;*/
 }

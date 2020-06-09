@@ -14,7 +14,7 @@ class CreateArticleTypeTable extends Migration
     public function up()
     {
         // 文章类型
-        Schema::create('article_type', function (Blueprint $table) {
+        Schema::create('article_types', function (Blueprint $table) {
             $table->increments('tid');
             $table->string('type_name')->default('默认');
         });

@@ -4,6 +4,9 @@
             <div class="container" >
                 @include('layout.singleArticle')
                 {{$articles->links()}}
+                <div class="col-sm-12">
+                    共 : {{$articles->total()}} 条数据
+                </div>
             </div>
         </div>
         @include('layout.sideBar')

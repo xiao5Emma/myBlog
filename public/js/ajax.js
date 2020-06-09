@@ -1,5 +1,5 @@
 log = console.log;
-function ajax(url,p_data={},callback="",type="post",dataType ="json"){
+function ajax(url,p_data={},callback="",type="post",dataType ="json",alert=0){
     var data =  {_token: $('meta[name="_token"]').attr('content')} ;
     Object.assign(data, p_data);
 
@@ -14,12 +14,13 @@ function ajax(url,p_data={},callback="",type="post",dataType ="json"){
         error: function(res) {
             if(callback)callback([0, res]);
             console.log('ajax 请求失败, url '+ url +" data " , data , "type" + type );
+            if(alert){
+                myAlert.show('ajax 请求失败, url '+ url +" data " , data , "type" + type);
+            }
         }
     });
 }
 
-// ajax('/posts',{  "name":"aaa" },function (res) {
-//     var flag = res[0];
-//     var msg = res[1];
-//     console.log(res);
-// });
+// ajax('/posts/getArticleContent',{  "id":id },function (res) {
+//     resolve(res);
+// },'post','json',1);

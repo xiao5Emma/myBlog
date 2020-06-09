@@ -9,7 +9,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon3">标题 :</span>
                             </div>
-                            <input type="text" value="1" name="title" class="form-control create_title"  autocomplete="off" placeholder="请输入文章标题" id="basic-url" aria-describedby="basic-addon3">
+                            <input type="text" name="title" class="form-control create_title"  autocomplete="off" placeholder="请输入文章标题" id="basic-url" aria-describedby="basic-addon3">
                         </div>
                     </div>
 
@@ -20,7 +20,11 @@
 
 
                     <div class="col-sm-12" style="padding: 0;background-color: white;" >
-                        <button class="btn btn-primary" onclick="store()"> 提交</button>
+                        @if(isset($id))
+                        <button class="btn btn-primary" onclick="store({{$id}})"> 提交</button>
+                            @else
+                            <button class="btn btn-primary" onclick="store()"> 提交</button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -29,7 +33,3 @@
         <div class="col-sm-1"></div>
     </div>
 </div>
-<script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
-<script src="{{asset('/js/ajax.js')}}" ></script>
-<script src="{{asset('/js/wangEditor.min.js')}}" ></script>
-<script src="{{asset('/js/myEditor.js')}}"></script>
