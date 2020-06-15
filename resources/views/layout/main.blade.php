@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('/css/myBlog.css')}}">
     <link rel="stylesheet" href="{{asset('/css/polygonAnimation.css')}}">
     <link rel="stylesheet" href="{{asset('/css/polygonAnimation2.css')}}">
+    <link rel="stylesheet" href="{{asset('/css/highlight.css')}}">
 
 </head>
 <body>
@@ -23,6 +24,11 @@
 <script src="{{asset('/js/jquery-3.5.1.min.js')}}"></script>
 <script src="{{asset('/js/common.js')}}" ></script>
 <script src="{{asset('/js/ajax.js')}}" ></script>
+
+{{--markdown 解析--}}
+<script src="{{asset('/js/mmd.min.js')}}" ></script>
+{{--高亮支持--}}
+<script src="{{asset('/js/highlight.pack.js')}}" ></script>
 
 <script src="{{asset('/js/wangEditor.min.js')}}" ></script>
 <script src="{{asset('/js/myEditor.js')}}" ></script>

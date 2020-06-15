@@ -122,6 +122,10 @@ function initArticleContent(id){
             if(!res[0])return;
             var data = res[1];
             var html  = data['content'] ;
+            // markdown 解析转换
+            // html = html.replace(/[(^<p>)(<\/p>$)]/g,"");
+            // var html = mmd(html);
+
 
             html = markdownToHtml(html);
             $('.articleContent p').html(html);

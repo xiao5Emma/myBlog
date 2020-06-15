@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use phpDocumentor\Reflection\Types\Context;
 use PhpParser\Node\Expr\PostDec;
 use Illuminate\Support\Facades\Storage;
 use App\Post;
@@ -17,7 +18,7 @@ use App\Http\Controllers\LoginController as Login;
 class PostController extends Controller
 {
     // 文章返回限制字符数
-    private $limitText = 500 ;
+    private $limitText = 250 ;
     private $igonoreIpList = ['119.28.203.193','113.65.33.17'];
 
 
@@ -170,6 +171,9 @@ class PostController extends Controller
             $content = str_replace(" ", "", $html_string);
             //函数剥去字符串中的 HTML、XML 以及 PHP 的标签,获取纯文本内容
             $contents = strip_tags($content);
+
+            $contents = preg_replace('/[#`\*\!\(\)\[\]]+/','', $contents);
+
             //返回字符串中的前$num字符串长度的字符
             return mb_strlen($contents,'utf-8') > $num ? mb_substr($contents, 0, $num, "utf-8").'....' : mb_substr($contents, 0, $num, "utf-8");
         }else{
@@ -243,6 +247,11 @@ class PostController extends Controller
     }
 
 
+    // 过滤标签, 过滤markdown 语法
+    private function pureText($context){
+
+    }
+
     // 文章详情
     public function show(Post $post,User $user, ArticleInfo $m_articleInfo,Request $request,Login $login){
         // 观看人数+1
@@ -257,6 +266,7 @@ class PostController extends Controller
         // 此处需要优化sql
         $userName = $user->select('name')->join('posts', 'posts.user_id', '=', 'users.id')->get();
         $userName = $userName[0]->name ;
+
 
         // 登录判定
         $isLoggin = $login->isLoggin($request);
@@ -283,8 +293,18 @@ class PostController extends Controller
             ->join('article_infos', 'posts.id', '=', 'article_infos.article_id')
             ->leftJoin('article_types', 'posts.article_type', '=', 'article_types.tid')
             ->Paginate(5);
-        $isEmpty = $articles->total();
-        return view('post/tags',compact('articles','isEmpty'));
+        $count = $articles->total();
+
+        if($count>0){
+            // 内容过滤标签后截取前500字符
+            foreach ($articles as $key => $article){
+                $content= $article['content'] ;
+                $articles[$key]['content'] = $this->HtmlToText($content,$this->limitText);
+            }
+        }
+
+
+        return view('post/tags',compact('articles','count'));
     }
 
     // 图片上传
